@@ -11,6 +11,36 @@
       value="{{ request.form['title'] or post['title'] }}" required>
     <label for="body">Description</label>
     <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
+    
+    <!--Creating radio buttons to update the ticket status. If blocks are present to change which radio button is checked by default -->
+    <div>
+    {% if post["ticket_status"] == "Submitted" %}
+    <input type="radio" name = "ticket_status" value = "Submitted" Checked>
+    <label for="submitted">Submitted</label>
+    <input type="radio" name = "ticket_status" value = "In Progress">
+    <label for="submitted">In Progress</label>
+    <input type="radio" name = "ticket_status" value = "Completed">
+    <label for="submitted">Completed</label>
+    {% endif %}
+    {% if post["ticket_status"] == "In Progress" %}
+    <input type="radio" name = "ticket_status" value = "Submitted">
+    <label for="submitted">Submitted</label>
+    <input type="radio" name = "ticket_status" value = "In Progress" Checked>
+    <label for="submitted">In Progress</label>
+    <input type="radio" name = "ticket_status" value = "Completed">
+    <label for="submitted">Completed</label>
+    {% endif %}
+    {% if post["ticket_status"] == "Completed" %}
+    <input type="radio" name = "ticket_status" value = "Submitted">
+    <label for="submitted">Submitted</label>
+    <input type="radio" name = "ticket_status" value = "In Progress" >
+    <label for="submitted">In Progress</label>
+    <input type="radio" name = "ticket_status" value = "Completed" Checked>
+    <label for="submitted">Completed</label>
+    {% endif %}
+    <!--End of radio button block -->
+
+    </div><br>
     <input type="submit" value="Submit">
   </form>
   <hr>

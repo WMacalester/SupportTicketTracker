@@ -10,7 +10,7 @@ bp = Blueprint('ticketLog', __name__)
 def index():
     db = get_db()
     posts = db.execute(
-        'SELECT p.id, title, body, created, author_id, username'
+        'SELECT p.id, title, body, ticket_status,created, author_id, username'
         ' FROM post p JOIN user u ON p.author_id = u.id'
         ' ORDER BY created DESC'
     ).fetchall()
@@ -43,7 +43,7 @@ def create():
 
 def get_post(id, check_author=True):
     post = get_db().execute(
-        'SELECT p.id, title, body, created, author_id, username'
+        'SELECT p.id, title, body, created, author_id, username,ticket_status'
         ' FROM post p JOIN user u ON p.author_id = u.id'
         ' WHERE p.id = ?',
         (id,)
@@ -65,19 +65,23 @@ def update(id):
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
+        ticket_status = request.form['ticket_status']
         error = None
 
         if not title:
             error = 'Title is required.'
+
+        if not ticket_status:
+            error = "Need to put ticket status." #Shouldn't occur as radio buttons for ticket status initialise as checked.
 
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'UPDATE post SET title = ?, body = ?'
+                'UPDATE post SET title = ?, body = ?, ticket_status = ?'
                 ' WHERE id = ?',
-                (title, body, id)
+                (title, body, ticket_status, id)
             )
             db.commit()
             return redirect(url_for('ticketLog.index'))
