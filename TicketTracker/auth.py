@@ -55,9 +55,17 @@ def login():
             error = 'Incorrect password.'
 
         if error is None:
-            session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index'))
+            admin = user["adminRights"]
+            if not admin:          
+                session.clear()
+                session['user_id'] = user['id']
+                session['adminRights'] = 0 #not sure if this is an appropriate way to set up whether the user is an admin for rest of the site
+                return redirect(url_for('index'))
+            if admin:
+                session.clear()
+                session['user_id'] = user['id']
+                session['adminRights'] = 1 #not sure if this is an appropriate way to set up whether the user is an admin for rest of the site
+                return redirect(url_for('index'))
 
         flash(error)
 
