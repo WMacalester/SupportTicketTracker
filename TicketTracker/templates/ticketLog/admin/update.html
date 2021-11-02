@@ -39,8 +39,11 @@
     <label for="submitted">Completed</label>
     {% endif %}
     <!--End of radio button block -->
-
     </div><br>
+    <label for="adminBody">Admin Comments</label>
+    <textarea name="adminBody" id="adminBody">{{ request.form['adminBody'] or post['adminBody'] }}</textarea>
+
+    
     <input type="submit" value="Submit">
   </form>
   <hr>

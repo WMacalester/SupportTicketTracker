@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Admin Tickets{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('ticketLog.create') }}">Submit a New Ticket</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for post in posts %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ post['title'] }}</h1>
+          <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</div>
+          <h2>Ticket Status: {{post['ticket_status']}}</h2>
+        </div>
+        {% if (post['ticket_status'] != "Completed") %} 
+          <a class="action" href="{{ url_for('ticketLog.update', id=post['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      <p class="body">{{ post['body'] }}</p>
+      {% if (post['adminBody']) %} 
+      <p class="adminBody">Admin Comments<br><br>{{ post['adminBody']}}</p>
+      {% endif %}
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
