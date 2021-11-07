@@ -35,6 +35,7 @@ def index():
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
+    
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
@@ -54,8 +55,13 @@ def create():
             )
             db.commit()
             return redirect(url_for('ticketLog.index'))
-
-    return render_template('ticketLog/user/create.html')
+            
+    '''Separate destination between admins and users'''
+    adminRights = session.get("adminRights")
+    if adminRights:
+        return render_template('ticketLog/admin/create.html')
+    if not adminRights:
+        return render_template('ticketLog/user/create.html')
 
 def get_post(id):
     post = get_db().execute(
@@ -108,6 +114,7 @@ def update(id):
             )
             db.commit()
             return redirect(url_for('ticketLog.index'))
+
     '''Separate destination between admins and users'''
     adminRights = session.get("adminRights")
     if adminRights:
