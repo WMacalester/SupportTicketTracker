@@ -4,6 +4,8 @@
   <h1>{% block title %}New Ticket Submission{% endblock %}</h1>
 {% endblock %}
 
+{% block updateAdminRights%} <li ><a href="{{ url_for('auth.updateAdminRights') }}">updateAdminRights</a>{% endblock updateAdminRights%}
+
 {% block content %}
   <form method="post">
     <label for="title">Title</label>

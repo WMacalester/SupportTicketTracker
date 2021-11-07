@@ -7,6 +7,8 @@
   {% endif %}
 {% endblock %}
 
+{% block updateAdminRights%} <li ><a href="{{ url_for('auth.updateAdminRights') }}">updateAdminRights</a>{% endblock updateAdminRights%}
+
 {% block content %}
   {% for post in posts %}
     <article class="post">
