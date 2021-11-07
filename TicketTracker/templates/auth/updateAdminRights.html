@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Change A User's Admin Rights{% endblock %}</h1>
+{% endblock %}
+
+{% block updateAdminRights%} <li ><a href="{{ url_for('auth.updateAdminRights') }}">updateAdminRights</a>{% endblock updateAdminRights%}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    
+    <!--Creating radio buttons to update the ticket status. If blocks are present to change which radio button is checked by default -->
+    <div>
+    <input type="radio" name = "newAdminRights" value = "0" Checked>
+    <label for="User">User</label>
+    <input type="radio" name = "newAdminRights" value = "1">
+    <label for="Admin">Admin</label>
+    <!--End of radio button block -->
+    </div>
+    
+    <input type="submit" value="Submit">
+  </form>
+
+{% endblock %}

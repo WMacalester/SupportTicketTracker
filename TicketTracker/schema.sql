@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS post;
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  adminRights INTEGER NOT NULL DEFAULT 0,
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL
 );
@@ -13,6 +14,7 @@ CREATE TABLE post (
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
+  adminBody TEXT DEFAULT "",
   ticket_status TEXT NOT NULL DEFAULT "Submitted",
   FOREIGN KEY (author_id) REFERENCES user (id)  
 );

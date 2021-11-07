@@ -21,6 +21,9 @@
         {% endif %}
       </header>
       <p class="body">{{ post['body'] }}</p>
+      {% if (post['adminBody']) %} 
+      <p class="adminBody">Admin Comments<br><br>{{ post['adminBody']}}</p>
+      {% endif %}
     </article>
     {% if not loop.last %}
       <hr>

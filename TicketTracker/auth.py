@@ -55,9 +55,17 @@ def login():
             error = 'Incorrect password.'
 
         if error is None:
-            session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index'))
+            admin = user["adminRights"]
+            if not admin:          
+                session.clear()
+                session['user_id'] = user['id']
+                session['adminRights'] = 0 #not sure if this is an appropriate way to set up whether the user is an admin for rest of the site
+                return redirect(url_for('index'))
+            if admin:
+                session.clear()
+                session['user_id'] = user['id']
+                session['adminRights'] = 1 #not sure if this is an appropriate way to set up whether the user is an admin for rest of the site
+                return redirect(url_for('index'))
 
         flash(error)
 
@@ -88,3 +96,50 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+@bp.route('/updateAdminRights', methods=('GET', 'POST'))
+@login_required
+def updateAdminRights():
+    adminRights = session.get('adminRights')
+    if request.method == 'POST':
+        username = request.form['username']
+        newAdminRights = request.form['newAdminRights']
+        
+        '''If user has admin rights, attempt to update target user's adminRights.'''
+        if adminRights:
+            db = get_db()
+            error = None
+            user = db.execute(
+                'SELECT * FROM user WHERE username = ?', (username,)
+            ).fetchone()
+
+            '''Raise error if the target user does not exist, or if the user is trying to change their own adminRights.'''
+            if user is None:
+                error = f"User {username} is not registered."
+            elif user["id"] == session.get("user_id"):
+                error = "Don't change your own access rights."
+
+            '''Try executing update'''
+            if error is None:
+                try:
+                    db.execute(
+                        'UPDATE user SET adminRights =? WHERE username = ?',
+                        (newAdminRights, username)
+                    )
+                    db.commit()
+                except db.IntegrityError:
+                    #UPDATE THIS WHEN YOU UNDERSTAND WHAT INTEGRITY ERROR MEANS
+                    error = f"Error updating admin rights for {username}. Please try again."
+                else:
+                    return redirect(url_for("index"))
+
+            flash(error)
+            
+            pass
+        else:
+            flash("You do not have permission to view this.")
+            return redirect(url_for('index'))
+        
+
+    return render_template('auth/updateAdminRights.html')
+

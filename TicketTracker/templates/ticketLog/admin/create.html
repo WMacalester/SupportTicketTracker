@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Ticket Submission{% endblock %}</h1>
+{% endblock %}
+
+{% block updateAdminRights%} <li ><a href="{{ url_for('auth.updateAdminRights') }}">updateAdminRights</a>{% endblock updateAdminRights%}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <label for="body">Description</label>
+    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
+    <input type="submit" value="Submit">
+    
+  </form>
+{% endblock %}
