@@ -117,7 +117,7 @@ def updateAdminRights():
             if user is None:
                 error = f"User {username} is not registered."
             elif user["id"] == session.get("user_id"):
-                error = "Don't change your own access rights."
+                error = "Do not try to change your own access rights."
 
             '''Try executing update'''
             if error is None:
