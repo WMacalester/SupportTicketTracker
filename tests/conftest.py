@@ -39,20 +39,34 @@ def runner(app):
     return app.test_cli_runner()
 
 
-class AuthActions(object):
+'''Views generally require a user to be logged in. The below class creates a dummy user that can be called for testing.'''
+class AuthActionsUser(object):
     def __init__(self, client):
         self._client = client
 
     def login(self, username='test', password='test'):
-        return self._client.post(
-            '/auth/login',
-            data={'username': username, 'password': password}
-        )
+        return self._client.post('/auth/login', data={'username': username, 'password': password})
 
     def logout(self):
         return self._client.get('/auth/logout')
 
-
+'''Fixture so that login and logout are now callable in tests.'''
 @pytest.fixture
-def auth(client):
-    return AuthActions(client)    
+def authUser(client):
+    return AuthActionsUser(client)    
+
+'''Class creates a dummy admin that can be called for testing.'''
+class AuthActionsAdmin(object):
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, username='adminTest', password='test'):
+        return self._client.post('/auth/login', data={'username': username, 'password': password})
+
+    def logout(self):
+        return self._client.get('/auth/logout')
+
+'''Fixture so that login and logout are now callable in tests.'''
+@pytest.fixture
+def authAdmin(client):
+    return AuthActionsAdmin(client)    
