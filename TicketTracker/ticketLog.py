@@ -100,7 +100,7 @@ def update(id):
         if not title:
             error = 'Title is required.'
 
-        if ticket_status != "Submitted" and  ticket_status != "In Progess" and ticket_status != "Completed":
+        if ticket_status != "Submitted" and  ticket_status != "In Progress" and ticket_status != "Completed":
             error = "Need to put ticket status." #Shouldn't occur as radio buttons for ticket status initialise as checked.
 
         if error is not None:
